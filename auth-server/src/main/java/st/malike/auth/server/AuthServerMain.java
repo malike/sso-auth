@@ -18,7 +18,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
  */
 @Configuration
 @EnableAutoConfiguration
-@EnableMongoRepositories("com.ranji.os.single.point.auth.repository")
+@EnableMongoRepositories("st.malike.auth.server.repository")
 @ComponentScan
 public class AuthServerMain {
 
