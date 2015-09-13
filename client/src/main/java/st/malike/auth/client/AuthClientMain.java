@@ -5,10 +5,17 @@
  */
 package st.malike.auth.client;
 
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+
 /**
  *
  * @author malike_st
  */
+@Configuration
+@EnableAutoConfiguration
+@ComponentScan
 public class AuthClientMain {
 
     /**
