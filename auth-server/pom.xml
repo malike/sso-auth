@@ -18,8 +18,8 @@
 
 
     <properties>      
-        <start-class>st.malike.App</start-class>       
-        <java.version>1.8</java.version>                                   
+        <start-class>st.malike.auth.server.AuthServerMain</start-class>    
+        <java.version>1.8</java.version>  
     </properties>
     
     <repositories>
