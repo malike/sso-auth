@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>st.malike</groupId>
+    <artifactId>sso-auth</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>sso-auth</name>
+    <url>http://maven.apache.org</url>
+    <modules>
+        <module>client</module>
+        <module>auth-server</module>
+    </modules>
+   
+    
+    <repositories>
+        <repository>
+            <id>clojars</id>
+            <url>http://clojars.org/repo/</url>
+        </repository>
+        <repository>
+            <id>google-releasess</id>
+            <url>https://oss.sonatype.org/content/repositories/releases</url>
+        </repository>
+    </repositories>
+        
+    
+    <dependencies>
+        
+        
+        
+        
+        
+    </dependencies>
+    
+</project>
