@@ -15,16 +15,7 @@
     </modules>
    
     
-    <repositories>
-        <repository>
-            <id>clojars</id>
-            <url>http://clojars.org/repo/</url>
-        </repository>
-        <repository>
-            <id>google-releasess</id>
-            <url>https://oss.sonatype.org/content/repositories/releases</url>
-        </repository>
-    </repositories>
+    
         
     
     <dependencies>
