@@ -5,7 +5,9 @@
  */
 package st.malike.auth.client;
 
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -23,6 +25,7 @@ public class AuthClientMain {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+         ApplicationContext context = SpringApplication.run(AuthClientMain.class, args);
     }
-    
+
 }
