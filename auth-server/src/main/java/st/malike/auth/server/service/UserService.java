@@ -6,7 +6,6 @@
 package st.malike.auth.server.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import st.malike.auth.server.model.User;
 import st.malike.auth.server.repository.UserRepository;
@@ -20,8 +19,6 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private MongoTemplate mongoTemplate;
 
     public User getUserById(String id) {
         return userRepository.findOne(id);
@@ -32,7 +29,7 @@ public class UserService {
     }
 
     public User findByEmail(String email) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return userRepository.findByEmail(email);
     }
 
     public void deleteAll() {

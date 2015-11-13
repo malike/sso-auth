@@ -46,8 +46,6 @@
 
 
 
-    <bean id="clientDetails"  class="st.malike.auth.server.service.security.ClientDetailService">
-    </bean>
 
     <bean id="checkToken" class="org.springframework.security.oauth2.provider.endpoint.CheckTokenEndpoint" >
         <constructor-arg index="0" ref="tokenServices">        
@@ -65,7 +63,7 @@
         </constructor-arg>
     </bean>
 
-    <oauth:authorization-server  client-details-service-ref="clientDetails" token-services-ref="tokenServices">
+    <oauth:authorization-server  client-details-service-ref="clientDetailService" token-services-ref="tokenServices">
         <oauth:authorization-code />
         <oauth:implicit  />
         <oauth:refresh-token  />
@@ -102,11 +100,11 @@
     <bean id="tokenServices" class="org.springframework.security.oauth2.provider.token.DefaultTokenServices">
         <property name="tokenStore" ref="tokenStore" />
         <property name="supportRefreshToken" value="true" />
-        <property name="clientDetailsService" ref="clientDetails" />
+        <property name="clientDetailsService" ref="clientDetailService" />
     </bean>
 
     <bean id="clientDetailsUserService" class="org.springframework.security.oauth2.provider.client.ClientDetailsUserDetailsService">
-        <constructor-arg ref="clientDetails" />
+        <constructor-arg ref="clientDetailService" />
     </bean>
 
     <bean id="oauthAccessDeniedHandler" class="org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler" />

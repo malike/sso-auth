@@ -39,6 +39,18 @@
             <scope>test</scope>
         </dependency>
         
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>           
+            <scope>test</scope>           
+        </dependency>
+        
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>            
+            <scope>test</scope>           
+        </dependency>
+        
         
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -71,8 +83,12 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>                                  
         </dependency>
-               
         
+        <dependency>
+            <groupId>apache-lang</groupId>
+            <artifactId>commons-lang</artifactId>         
+        </dependency>
+       
     </dependencies>
     <build>
         <plugins>            

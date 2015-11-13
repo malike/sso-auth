@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package st.malike.auth.server.repository;
 
 import java.io.Serializable;
@@ -14,6 +13,8 @@ import st.malike.auth.server.model.User;
  *
  * @author malike_st
  */
-public interface UserRepository extends MongoRepository<User, Serializable>{
+public interface UserRepository extends MongoRepository<User, Serializable> {
+
+    public User findByEmail(String email);
 
 }

@@ -10,7 +10,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import st.malike.auth.server.model.User;
 import st.malike.auth.server.service.UserService;
 
@@ -18,7 +18,7 @@ import st.malike.auth.server.service.UserService;
  *
  * @author malike_st
  */
-@Component
+@Service
 public class UserAuthConfigService {
 
     @Autowired
@@ -29,12 +29,12 @@ public class UserAuthConfigService {
     }
 
     public List<GrantedAuthority> getRights(User user) {
-        List<GrantedAuthority> grantedAuthority = new LinkedList<GrantedAuthority>();
+        List<GrantedAuthority> grantedAuthority = new LinkedList<>();
         List<String> right = user.getRights();
-        if (!right.isEmpty()) {
-            for (String r : right) {
+        if (null != right && !right.isEmpty()) {
+            right.stream().forEach(r -> {
                 grantedAuthority.add(new SimpleGrantedAuthority(r));
-            }
+            });
         }
         return grantedAuthority;
     }

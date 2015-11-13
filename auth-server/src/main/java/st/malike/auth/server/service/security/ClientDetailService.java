@@ -16,6 +16,7 @@ import org.springframework.security.oauth2.provider.ClientRegistrationException;
 import org.springframework.security.oauth2.provider.ClientRegistrationService;
 import org.springframework.security.oauth2.provider.NoSuchClientException;
 import org.springframework.security.oauth2.provider.client.BaseClientDetails;
+import org.springframework.stereotype.Service;
 import st.malike.auth.server.model.ClientDetail;
 import st.malike.auth.server.repository.ClientDetailRepository;
 
@@ -23,19 +24,17 @@ import st.malike.auth.server.repository.ClientDetailRepository;
  *
  * @author malike_st
  */
+@Service
 public class ClientDetailService implements ClientDetailsService, ClientRegistrationService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
-    private ClientDetailRepository mongoDBClientDetailsRepository;
-
-    public ClientDetailService() {
-    }
+    private ClientDetailRepository clientDetailsRepository;
 
     @Override
     public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
-        ClientDetail clientDetails = mongoDBClientDetailsRepository.findByClientId(clientId);
+        ClientDetail clientDetails = clientDetailsRepository.findByClientId(clientId);
         if (null == clientDetails) {
             throw new ClientRegistrationException("Client not found with id '" + clientId + "'");
         }
@@ -45,41 +44,41 @@ public class ClientDetailService implements ClientDetailsService, ClientRegistra
     @Override
     public void addClientDetails(ClientDetails cd) throws ClientAlreadyExistsException {
         ClientDetail clientDetails = getMongoDBClientDetailsFromClient(cd);
-        mongoDBClientDetailsRepository.save(clientDetails);
+        clientDetailsRepository.save(clientDetails);
     }
 
     @Override
     public void updateClientDetails(ClientDetails cd) throws NoSuchClientException {
-        ClientDetail clientDetails = mongoDBClientDetailsRepository.findByClientId(cd.getClientId());
+        ClientDetail clientDetails = clientDetailsRepository.findByClientId(cd.getClientId());
         if (null == clientDetails) {
             throw new NoSuchClientException("Client not found with ID '" + cd.getClientId() + "'");
         }
         clientDetails = getMongoDBClientDetailsFromClient(cd);
-        mongoDBClientDetailsRepository.save(clientDetails);
+        clientDetailsRepository.save(clientDetails);
     }
 
     @Override
     public void updateClientSecret(String clientId, String secret) throws NoSuchClientException {
-        ClientDetail clientDetails = mongoDBClientDetailsRepository.findByClientId(clientId);
+        ClientDetail clientDetails = clientDetailsRepository.findByClientId(clientId);
         if (null == clientDetails) {
             throw new NoSuchClientException("Client not found with ID '" + clientId + "'");
         }
         clientDetails.setClientSecret(passwordEncoder.encode(secret));
-        mongoDBClientDetailsRepository.save(clientDetails);
+        clientDetailsRepository.save(clientDetails);
     }
 
     @Override
     public void removeClientDetails(String clientId) throws NoSuchClientException {
-        ClientDetail clientDetails = mongoDBClientDetailsRepository.findByClientId(clientId);
+        ClientDetail clientDetails = clientDetailsRepository.findByClientId(clientId);
         if (null == clientDetails) {
             throw new NoSuchClientException("Client not found with ID '" + clientId + "'");
         }
-        mongoDBClientDetailsRepository.delete(clientDetails);
+        clientDetailsRepository.delete(clientDetails);
     }
 
     @Override
     public List listClientDetails() {
-        List<ClientDetail> mdbcds = mongoDBClientDetailsRepository.findAll();
+        List<ClientDetail> mdbcds = clientDetailsRepository.findAll();
         return getClientsFromMongoDBClientDetails(mdbcds);
     }
 
@@ -121,6 +120,14 @@ public class ClientDetailService implements ClientDetailsService, ClientRegistra
         clientDetails.setSecretRequired(cd.isSecretRequired());
         clientDetails.setId(cd.getClientId());
         return clientDetails;
+    }
+
+    public ClientDetail save(ClientDetail authClient) {
+        return clientDetailsRepository.save(authClient);
+    }
+
+    public void deleteAll() {
+        clientDetailsRepository.deleteAll();
     }
 
 }

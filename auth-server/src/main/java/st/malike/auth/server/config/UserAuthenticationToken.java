@@ -1,9 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package st.malike.auth.server.util;
+package st.malike.auth.server.config;
 
 import java.util.Collection;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -11,19 +10,20 @@ import org.springframework.security.core.GrantedAuthority;
 
 /**
  *
+ *
  * @author malike_st
  */
-public class ClientAuthenticationToken extends AbstractAuthenticationToken {
+public class UserAuthenticationToken extends AbstractAuthenticationToken {
 
     private final Object principal;
     private final Object credentials;
     private final boolean client;
 
-    public ClientAuthenticationToken(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
+    public UserAuthenticationToken(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         this.principal = principal;
         this.credentials = credentials;
-        this.client = true;
+        this.client = false;
         super.setAuthenticated(true);
     }
 

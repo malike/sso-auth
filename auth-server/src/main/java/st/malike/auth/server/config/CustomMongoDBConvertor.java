@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package st.malike.auth.server.util;
+package st.malike.auth.server.config;
 
 import com.mongodb.DBObject;
 import java.util.ArrayList;
@@ -11,28 +11,31 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.mongodb.core.convert.CustomConversions;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Request;
-import org.springframework.stereotype.Component;
 import st.malike.auth.server.model.User;
 import st.malike.auth.server.service.security.ClientDetailService;
 import st.malike.auth.server.service.security.UserAuthConfigService;
 
 /**
+ * 
  *
  * @author malike_st
  */
-@Component
+@Configuration
 public class CustomMongoDBConvertor implements Converter<DBObject, OAuth2Authentication> {
 
     @Autowired
     private UserAuthConfigService authConfigService;
     @Autowired
-    private ClientDetailService mongoDBClientDetailService;
+    private ClientDetailService clientDetailService;
+    
+   
 
     @Override
     public OAuth2Authentication convert(DBObject source) {
@@ -48,7 +51,8 @@ public class CustomMongoDBConvertor implements Converter<DBObject, OAuth2Authent
                 u = authConfigService.getUser((String) prinObj);
             } else if (null != prinObj) {
                 DBObject principalDBO = (DBObject) prinObj;
-                u = authConfigService.getUser((String) principalDBO.get("username"));
+                String email = (String) principalDBO.get("username");
+                u = authConfigService.getUser(email);
             }
             if (null == u) {
                 return null;
@@ -62,7 +66,7 @@ public class CustomMongoDBConvertor implements Converter<DBObject, OAuth2Authent
             String clientId = (String) storedRequest.get("clientId");
             ClientDetails client = null;
             if ((null != clientId) && clientId instanceof String) {
-                client = mongoDBClientDetailService.loadClientByClientId(clientId);
+                client = clientDetailService.loadClientByClientId(clientId);
             }
             if (null == client) {
                 return null;
@@ -76,8 +80,7 @@ public class CustomMongoDBConvertor implements Converter<DBObject, OAuth2Authent
     @Bean
     public CustomConversions customConversions() {
         List<Converter<?, ?>> converterList = new ArrayList<>();
-        CustomMongoDBConvertor converter = new CustomMongoDBConvertor();
-        converterList.add(converter);
+        converterList.add(this);
         return new CustomConversions(converterList);
     }
 }
