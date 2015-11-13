@@ -24,7 +24,7 @@ import org.springframework.security.oauth2.provider.token.ResourceServerTokenSer
 @EnableResourceServer
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Value("${app.id}")
+    @Value("${app.client.id}")
     private String appId;
     @Value("${app.client.secret}")
     private String appSecret;

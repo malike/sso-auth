@@ -16,7 +16,6 @@ import org.springframework.security.oauth2.provider.ClientRegistrationException;
 import org.springframework.security.oauth2.provider.ClientRegistrationService;
 import org.springframework.security.oauth2.provider.NoSuchClientException;
 import org.springframework.security.oauth2.provider.client.BaseClientDetails;
-import org.springframework.stereotype.Component;
 import st.malike.auth.server.model.ClientDetail;
 import st.malike.auth.server.repository.ClientDetailRepository;
 
@@ -24,7 +23,6 @@ import st.malike.auth.server.repository.ClientDetailRepository;
  *
  * @author malike_st
  */
-@Component
 public class ClientDetailService implements ClientDetailsService, ClientRegistrationService {
 
     @Autowired
