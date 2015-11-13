@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:oauth="http://www.springframework.org/schema/security/oauth2"
+       xmlns:sec="http://www.springframework.org/schema/security"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/security/oauth2 http://www.springframework.org/schema/security/spring-security-oauth2-1.0.xsd
+        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    
+    
+    <sec:http pattern="/oauth/token" create-session="stateless"  authentication-manager-ref="authenticationManager" >
+        <sec:intercept-url pattern="/oauth/token"  />
+        <sec:anonymous enabled="true" />
+        <sec:http-basic entry-point-ref="clientAuthenticationEntryPoint" />
+        <sec:custom-filter ref="clientCredentialsTokenEndpointFilter" after="BASIC_AUTH_FILTER" />  
+        <sec:access-denied-handler ref="oauthAccessDeniedHandler" />
+    </sec:http>
+    
+    <sec:http auto-config="true"  pattern="/oauth/check_token"  create-session="stateless" authentication-manager-ref="authenticationManager">
+        <sec:intercept-url pattern="/oauth/check_token" access="IS_AUTHENTICATED_FULLY" />
+        <sec:anonymous enabled="false"/>
+        <sec:http-basic entry-point-ref="clientAuthenticationEntryPoint" />
+    </sec:http>
+
+   
+    <sec:http pattern="/**" create-session="stateless" entry-point-ref="oauthAuthenticationEntryPoint"
+              access-decision-manager-ref="accessDecisionManager" >
+        <sec:anonymous enabled="false" />
+        <sec:intercept-url pattern="/**" access="SCOPE_READ" />
+        <sec:custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
+        <sec:access-denied-handler ref="oauthAccessDeniedHandler" />
+    </sec:http>
+
+
+    <sec:authentication-manager  alias="authenticationManager"  >  
+        <!--You can add other authentication providers here-->  
+        <sec:authentication-provider ref="userAuthProviderService">           
+        </sec:authentication-provider>
+        <sec:authentication-provider
+            user-service-ref="clientDetailsUserService">
+            <sec:password-encoder ref="passwordEncoder" />
+        </sec:authentication-provider>
+    </sec:authentication-manager>
+
+
+
+
+    <bean id="clientDetails"  class="st.malike.auth.server.service.security.ClientDetailService">
+    </bean>
+
+    <bean id="checkToken" class="org.springframework.security.oauth2.provider.endpoint.CheckTokenEndpoint" >
+        <constructor-arg index="0" ref="tokenServices">        
+        </constructor-arg>   
+    </bean>
+
+
+    <bean id="accessDecisionManager" class="org.springframework.security.access.vote.UnanimousBased" >
+        <constructor-arg>
+            <list>
+                <bean class="org.springframework.security.oauth2.provider.vote.ScopeVoter" />
+                <bean class="org.springframework.security.access.vote.RoleVoter" />
+                <bean class="org.springframework.security.access.vote.AuthenticatedVoter" />
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <oauth:authorization-server  client-details-service-ref="clientDetails" token-services-ref="tokenServices">
+        <oauth:authorization-code />
+        <oauth:implicit  />
+        <oauth:refresh-token  />
+        <oauth:client-credentials />        
+        <oauth:password authentication-manager-ref="authenticationManager" />
+    </oauth:authorization-server>
+
+
+    <oauth:resource-server id="resourceServerFilter" resource-id="sso-auth" token-services-ref="tokenServices" />
+
+    <sec:global-method-security pre-post-annotations="enabled" proxy-target-class="true">
+        <sec:expression-handler ref="oauthExpressionHandler" />
+    </sec:global-method-security>
+
+    <oauth:expression-handler id="oauthExpressionHandler" />
+
+    <oauth:web-expression-handler id="oauthWebExpressionHandler" />
+
+    <bean id="clientAuthenticationEntryPoint" class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
+        <property name="realmName" value="/auth/" />
+    </bean>
+
+
+
+    <bean id="clientCredentialsTokenEndpointFilter" class="org.springframework.security.oauth2.provider.client.ClientCredentialsTokenEndpointFilter">
+        <property name="authenticationManager" ref="authenticationManager" />
+    </bean>
+
+    
+    <bean id="tokenStore" class="st.malike.auth.server.service.security.TokenStoreService">        
+    </bean>
+
+
+    <bean id="tokenServices" class="org.springframework.security.oauth2.provider.token.DefaultTokenServices">
+        <property name="tokenStore" ref="tokenStore" />
+        <property name="supportRefreshToken" value="true" />
+        <property name="clientDetailsService" ref="clientDetails" />
+    </bean>
+
+    <bean id="clientDetailsUserService" class="org.springframework.security.oauth2.provider.client.ClientDetailsUserDetailsService">
+        <constructor-arg ref="clientDetails" />
+    </bean>
+
+    <bean id="oauthAccessDeniedHandler" class="org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler" />
+
+    <bean id="oauthAuthenticationEntryPoint" class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
+        <property name="realmName" value="/auth/" />
+    </bean>
+    
+    <bean id="userAuthProviderService" class="st.malike.auth.server.service.security.UserAuthProviderService">
+        <!--<property name="passwordEncoder" ref="passwordEncoder"/>-->
+    </bean>
+    
+     
+    <bean id="passwordEncoder"  class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+        <constructor-arg name="strength" value="11" />
+    </bean>
+    
+  
+</beans>

@@ -50,7 +50,7 @@ public class TokenStoreService implements TokenStore {
         Query query = new Query();
         query.addCriteria(Criteria.where("tokenId").is(tokenId));
         OAuth2AuthenticationAccessToken token = mongoTemplate.findOne(query, OAuth2AuthenticationAccessToken.class, "oauth2_access_token");
-        return token == null ? null : token.getAuthentication();
+        return null == token ? null : token.getAuthentication();
     }
 
     @Override

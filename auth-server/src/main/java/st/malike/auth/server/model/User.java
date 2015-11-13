@@ -8,6 +8,7 @@ package st.malike.auth.server.model;
 import java.util.Date;
 import java.util.List;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -17,6 +18,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "oauth2_user")
 public class User {
 
+    @Id
     private String id;
     private String email;
     private String password;

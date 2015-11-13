@@ -28,8 +28,6 @@ import st.malike.auth.server.repository.ClientDetailRepository;
 public class ClientDetailService implements ClientDetailsService, ClientRegistrationService {
 
     @Autowired
-    private UserAuthConfigService authConfigService;
-    @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
     private ClientDetailRepository mongoDBClientDetailsRepository;

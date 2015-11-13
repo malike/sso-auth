@@ -38,7 +38,6 @@
             <groupId>uk.co.jemos.podam</groupId>
             <artifactId>podam</artifactId>
             <scope>test</scope>
-            <type>jar</type>
         </dependency>
         
         
@@ -67,6 +66,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>            
+        </dependency>
+        
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>                                  
         </dependency>
                
         
