@@ -14,16 +14,21 @@
         <module>auth-server</module>
     </modules>
    
-    <repositories>
+   <repositories>
         <repository>
-            <id>clojars</id>
-            <url>http://clojars.org/repo/</url>
-        </repository>
-        <repository>
-            <id>google-releasess</id>
-            <url>https://oss.sonatype.org/content/repositories/releases</url>
+            <id>maven</id>
+            <name>mvn</name>
+            <url>http://central.maven.org/maven2/</url>
         </repository>
     </repositories>
+
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>maven</id>
+            <url>http://central.maven.org/maven2/</url>
+        </pluginRepository>
+    </pluginRepositories>
     
     <parent>
         <groupId>org.springframework.boot</groupId>
