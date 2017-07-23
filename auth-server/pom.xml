@@ -85,7 +85,7 @@
         </dependency>
         
         <dependency>
-            <groupId>apache-lang</groupId>
+            <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>         
         </dependency>
        
